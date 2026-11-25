@@ -89,12 +89,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $subtotale = $subtotale / 2;
       }
       elseif($codiceSconto == "KTSM80"){
-        $subtotale = $subtotale * 0.8;
+        $subtotale = $subtotale * 0.2;
       }
       else {
         $erroreCodiceSconto = "Codice sconto non valido";
       }
-}
+    }
 
     
     // EXTRA
@@ -106,7 +106,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $totale = $subtotale;
     
   }
-  else $esito = "KO";
+  else {
+    $esito = "KO";
+    
+    if($erroreQuaderno != "") echo "<p class='error'>$erroreQuaderno</p>";
+    if($errorePenna != "") echo "<p class='error'>$errorePenna</p>";
+    if($erroreZaino != "") echo "<p class='error'>$erroreZaino</p>";
+    if($erroreCarrelloVuoto != "") echo "<p class='error'>$erroreCarrelloVuoto</p>";
+}
 }
 
 ?>
@@ -121,27 +128,99 @@ if($esito == "OK"){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+    body {
+      font-family: sans-serif;
+      max-width: 32rem;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      color: #1c1e22;
+      background: #f7f6f2;
+    }
+
+    h1 {
+      margin-bottom: 0.2rem;
+    }
+
+    .negozio {
+      margin-top: 0;
+      color: #555b66;
+    }
+
+    form {
+      background: #fff;
+      border: 1px solid #d6d3cb;
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 0.4rem 0.3rem;
+      border-bottom: 1px solid #e6e3dc;
+    }
+
+    td.prezzo {
+      white-space: nowrap;
+    }
+
+    input[type="number"] {
+      width: 4rem;
+    }
+
+    fieldset {
+      margin: 1rem 0;
+      border: 1px solid #d6d3cb;
+      border-radius: 6px;
+    }
+
+    label {
+      display: block;
+      margin: 0.3rem 0;
+    }
+
+    button {
+      font-size: 1rem;
+      padding: 0.5rem 1.2rem;
+      border: 0;
+      border-radius: 6px;
+      background: #1f5fbf;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .error {
+      color: red;
+    }
+  </style>
   </head>
   <body>
     <h1>RISULTATO</h1>
     <br>
-    <p>Quaderni: <?php echo htmlspecialchars($quaderno); ?></p>
-    <br>
+    <p>Quaderni: <?php echo htmlspecialchars($quaderno); ?> x Prezzo: <?php echo $prezzoQuaderno; ?> = <?php echo $subtotale;?>€</p>
     <p>Prezzo: <?php echo $prezzoQuaderno; ?></p>
     <br>
-    <br>
     <p>Penne: <?php echo htmlspecialchars($penna); ?></p>
-    <br>
     <p>Prezzo: <?php echo $prezzoPenna; ?></p>
     <br>
-    <br>
     <p>Zaini: <?php echo htmlspecialchars($zaino); ?></p>
-    <br>
     <p>Prezzo: <?php echo $prezzoZaino; ?></p>
     <br>
+    <p>Subtotale: <?php echo number_format($subtotaleIniziale, 2, ".", ",");?></p>
+    <?php
+    if($erroreCodiceSconto != ""){
+      echo "<br>";
+      echo "<p class='error'>$erroreCodiceSconto</p>";
+    }
+    ?>
     <br>
-    <p>Subtotale: <?php echo $subtotale;?></p>
-    <br>
+    <p>Totale: <?php echo number_format($totale, 2, ".", ",");?></p>
     
   </body>
   </html>
